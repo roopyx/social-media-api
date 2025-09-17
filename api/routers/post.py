@@ -18,7 +18,7 @@ def find_post(post_id:int):
     return post_table.get(post_id)
 
 
-@router.post("/post", response_model=UserPost)
+@router.post("/post", response_model=UserPost, status_code=201)
 async def create_post(post:UserPostIn):
     data = post.model_dump()
     last_record_id = len(post_table)
@@ -49,7 +49,7 @@ async def get_comments_on_posts(post_id: int):
     return [comment for comment in comment_table.values() if comment["post_id"] == post_id]
 
 
-@router.get("/post/{post_id}", response_model=UserPostWithComments)
+@router.get("/post/{post_id}/comments", response_model=UserPostWithComments)
 async def get_post_with_comments(post_id: int):
     post = find_post(post_id)
     if not post:
